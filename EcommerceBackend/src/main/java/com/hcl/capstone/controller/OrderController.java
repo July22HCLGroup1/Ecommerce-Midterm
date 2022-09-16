@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hcl.capstone.dto.OrderInfo;
 import com.hcl.capstone.consumer.SupplyChainConsumer;
 import com.hcl.capstone.dto.ProductRestockDTO;
 import com.hcl.capstone.model.Order;
@@ -60,9 +61,10 @@ public class OrderController {
 	}
 
 	@PostMapping(value = "/user/check-out")
-	public String checkOut(Authentication authentication)
+	public String checkOut(Authentication authentication,
+			@RequestBody OrderInfo orderInfo)
 			throws MessagingException {
-		return orderService.checkOut(authentication);
+		return orderService.checkOut(orderInfo,authentication);
 	}
 
 	@DeleteMapping(value = "/user/delete-all-order-items")

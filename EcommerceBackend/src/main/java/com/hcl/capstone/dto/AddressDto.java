@@ -1,6 +1,6 @@
 package com.hcl.capstone.dto;
 
-public class AddressDTO {
+public class AddressDto {
 	private String street;
 	
 	private String unit;
