@@ -26,6 +26,7 @@ export class CheckoutComponent implements OnInit {
   orderInfo: OrderInfo = new OrderInfo();
   shippingAddress: Address = new Address();
   billingAddress: Address = new Address();
+  sameAddress: boolean = true;
 
   //Initialize Stripe API
   stripe = Stripe(environment.stripePublishableKey);
@@ -110,7 +111,7 @@ export class CheckoutComponent implements OnInit {
               alert(`There was an error: ${result.error.message}`);
             } else {
               this.orderInfo.shippingAddress = this.shippingAddress;
-              if (true) { /* TODO replace boolean w/check */      
+              if (this.sameAddress) { /* TODO replace boolean w/check */      
                 this.orderInfo.billingAddress = this.shippingAddress;
               } else {
                 this.orderInfo.billingAddress = this.billingAddress;
