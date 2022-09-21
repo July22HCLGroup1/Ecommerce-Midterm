@@ -5,5 +5,6 @@ export class Product {
     productStock:number;
     productImage: string;
     productDescription: string;
+    stockThreshold: number;
 
 }

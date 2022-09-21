@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hcl.capstone.dto.OrderInfo;
+import com.hcl.capstone.dto.ProductRestockDTO;
 import com.hcl.capstone.global.OrderStatus;
 import com.hcl.capstone.mailer.Mail;
 import com.hcl.capstone.model.Address;
@@ -17,17 +19,30 @@ import com.hcl.capstone.model.Order;
 import com.hcl.capstone.model.OrderItem;
 import com.hcl.capstone.model.Product;
 import com.hcl.capstone.model.User;
+import com.hcl.capstone.publisher.ProductRestockPublisher;
 import com.hcl.capstone.repository.OrderItemRepository;
 import com.hcl.capstone.repository.OrderRepository;
 import com.hcl.capstone.repository.ProductRepository;
 
 @Service
 public class OrderService {	
-	@Autowired private OrderItemRepository orderItemRepository;
-	@Autowired private OrderRepository orderRepository;
-	@Autowired private ProductRepository productsRepository;
-	@Autowired private UserService userService;
-	@Autowired private ProductService productService;
+	@Autowired 
+	private OrderItemRepository orderItemRepository;
+	
+	@Autowired 
+	private OrderRepository orderRepository;
+	
+	@Autowired 
+	private ProductRepository productsRepository;
+	
+	@Autowired 
+	private UserService userService;
+	
+	@Autowired 
+	private ProductService productService;
+	
+	@Autowired
+	private ProductRestockPublisher productRestockPublisher;
 		
 	public List<Order> getAllOrders() {
 		return orderRepository.findAll();
@@ -101,7 +116,7 @@ public class OrderService {
 	}
 	
 	public String checkOut(OrderInfo orderInfo, Authentication authentication)
-			throws MessagingException {
+			throws MessagingException, JsonProcessingException {
 		User userCheckout = userService.getCurrentLoggedInUser(authentication);
 		if (userCheckout != null) {
 
@@ -123,6 +138,16 @@ public class OrderService {
 					}
 
 					productService.saveProduct(productCheckout);
+					
+					if(itemCheckout.getProduct().getProductStock() < itemCheckout.getProduct().getStockThreshold()) {
+						ProductRestockDTO productRestockDTO = new ProductRestockDTO();
+						productRestockDTO.setProductId(itemCheckout.getProduct().getProductId());
+						int restockQuantity = itemCheckout.getProduct().getStockThreshold();
+						productRestockDTO.setRestockQuantity(restockQuantity);
+						productRestockDTO.setMessage("Please restock this item: " + itemCheckout.getProduct().getProductName() + " for this amount: " + restockQuantity);
+
+						productRestockPublisher.produce(productRestockDTO);
+					}
 				}
 
 				double orderTotal = getOrderTotal(userCheckout, orderCheckout);

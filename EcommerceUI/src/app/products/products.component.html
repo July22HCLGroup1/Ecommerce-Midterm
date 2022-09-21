@@ -4,8 +4,7 @@
             <input id="searchStr" #searchStr name="searchStr" type="text" placeholder="Search...">
             <button type="submit">Submit</button>
         </form>
-        <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true"
-            [length]="searchedProducts.length" [pageIndex]="currentPage" (page)="handlePage($event)">
+        <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true" [length]="searchedProducts.length" [pageIndex]="currentPage" (page)="handlePage($event)">
         </mat-paginator>
     </div>
     <div class="row">
@@ -16,11 +15,23 @@
                     {{item.productName}}</h5>
                 <p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 100ch;">
                     {{item.productDescription}}</p>
-                <p><strong>Price:</strong> ${{item.unitPrice}}</p>
+                <p><strong>Price:</strong> ${{item.unitPrice}}
+                    <ng-container *ngIf="item.productStock < item.stockThreshold && item.productStock !== 0">
+                        <span class="low-stock">Low stock</span>
+                    </ng-container>
+                </p>
                 <div class="row">
-                    <div class="col-md-6">
-                        <button class="btn btn-primary" (click)=addtocart(item)>Add to cart</button>
-                    </div>
+                    <ng-container *ngIf="item.productStock > 0, else outOfStock">
+                        <div class="col-md-6">
+                            <button class="btn btn-primary" (click)=addtocart(item)>Add to Cart</button>
+                        </div>
+                    </ng-container>
+                    <ng-template #outOfStock>
+                        <div class="col-md-6">
+                            <button class="btn btn-danger" disabled>Out of Stock</button>
+                        </div>
+                    </ng-template>
+
                     <div class="col-md-6">
                         <button class="btn btn-primary" (click)="goToProductDetails(item)">View More</button>
                     </div>

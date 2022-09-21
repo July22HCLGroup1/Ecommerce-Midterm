@@ -35,7 +35,8 @@ export class ApiService {
       unitPrice: (data as any).unitPrice,
       productStock: (data as any).productStock,
       productImage: (data as any).productImage,
-      productDescription: (data as any).productDescription
+      productDescription: (data as any).productDescription,
+      stockThreshold: (data as any).productStock
       }),
       catchError(error => this.throwError(error))
     )

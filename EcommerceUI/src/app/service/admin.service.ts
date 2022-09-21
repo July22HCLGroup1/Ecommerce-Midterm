@@ -49,4 +49,8 @@ export class AdminService {
   public updateProduct(product : any) {
     return this.http.put(this.PATH_OF_API + "/admin/product/" + product.productId, product);
   }
+
+  public processRestock() : Observable<any> {
+    return this.http.get<any>(this.PATH_OF_API + "/api/process-restock");
+  }
 }

@@ -175,6 +175,7 @@ public class UserService {
 		
 		return currentUser.getAddress();
 	}
+	
 	//update user password
 	public boolean updateUserPassword(PasswordDto passwordDTO, Authentication authentication) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();	

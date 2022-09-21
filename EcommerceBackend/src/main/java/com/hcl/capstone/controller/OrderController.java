@@ -5,8 +5,6 @@ import java.util.List;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hcl.capstone.dto.OrderInfo;
-import com.hcl.capstone.consumer.SupplyChainConsumer;
-import com.hcl.capstone.dto.ProductRestockDTO;
 import com.hcl.capstone.model.Order;
 import com.hcl.capstone.model.OrderItem;
 import com.hcl.capstone.model.User;
-import com.hcl.capstone.publisher.ProductRestockPublisher;
 import com.hcl.capstone.service.OrderService;
 import com.hcl.capstone.service.UserService;
 
@@ -63,7 +58,7 @@ public class OrderController {
 	@PostMapping(value = "/user/check-out")
 	public String checkOut(Authentication authentication,
 			@RequestBody OrderInfo orderInfo)
-			throws MessagingException {
+			throws MessagingException, JsonProcessingException {
 		return orderService.checkOut(orderInfo,authentication);
 	}
 

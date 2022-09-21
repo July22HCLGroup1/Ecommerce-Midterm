@@ -185,3 +185,13 @@ table.table .avatar {
     margin-top: 10px;
     font-size: 13px;
 }
+
+.low-stock {
+    text-shadow: 0 0 3px #FFC107, 0 0 5px #FFC107;
+    font-size: 0.7rem;
+}
+
+.out-of-stock {
+    text-shadow: 0 0 3px #F44336, 0 0 5px #F44336;
+    font-size: 0.7rem;
+}

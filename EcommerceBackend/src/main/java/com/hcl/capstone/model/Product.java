@@ -31,13 +31,17 @@ public class Product {
 
 	@Column(name = "PRODUCT_DESCRIPTION")
 	private String productDescription;
+	
+	@Column(name = "STOCK_THRESHOLD")
+	private int stockThreshold;
 
-	public Product(String productName, double unitPrice, int productStock, String productImage, String productDescription){
+	public Product(String productName, double unitPrice, int productStock, String productImage, String productDescription, int stockThreshold){
 		this.productName = productName;
 		this.unitPrice = unitPrice;
 		this.productStock = productStock;
 		this.productImage = productImage;
 		this.productDescription = productDescription;
+		this.stockThreshold = stockThreshold;
 	}
 
 	public long getProductId() {
@@ -86,6 +90,14 @@ public class Product {
 
 	public void setProductDescription(String productDescription) {
 		this.productDescription = productDescription;
+	}
+
+	public int getStockThreshold() {
+		return stockThreshold;
+	}
+
+	public void setStockThreshold(int stockThreshold) {
+		this.stockThreshold = stockThreshold;
 	}
 
 }

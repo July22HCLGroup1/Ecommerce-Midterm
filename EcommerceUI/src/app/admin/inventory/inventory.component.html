@@ -3,13 +3,14 @@
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
-                    <div class="col-xs-5">
-                        <h2>Product <strong>Management</strong></h2>
+                    <div class="col-md-6">
+                        <h2>Inventory <strong>Management</strong></h2>
                     </div>
-                    <div class="col-xs-7">
-
+                    <div class="col-md-3">
+                        <button class="btn btn-primary" (click)="processRestock()" style="float: right;">Process Restock</button>
+                    </div>
+                    <div class="col-md-3">
                         <a routerLink="./add" class="btn btn-primary" style="float: right;"><em class="material-icons">&#xE147;</em> <span>Add New Product</span></a>
-
                     </div>
                 </div>
             </div>
@@ -17,22 +18,32 @@
                 <thead>
                     <tr>
                         <th>Product Id</th>
+                        <th>Product Image</th>
                         <th>Product Name</th>
+                        <th>Product Description</th>
                         <th>Unit Price</th>
                         <th>Product Stock</th>
-                        <th>Product Image</th>
-                        <th>Product Description</th>
+                        <th>Stock Threshold</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let product of productList; let i = index">
                         <td>{{i+1}}</td>
+                        <td><img src="{{product.productImage}}" alt="product image" style="width: 120px;" /></td>
                         <td>{{product.productName}}</td>
-                        <td>${{product.unitPrice}}</td>
-                        <td>{{product.productStock}}</td>
-                        <td><img src="{{product.productImage}}" alt= "product image" style="width: 120px;" /></td>
                         <td>{{product.productDescription}}</td>
+                        <td>${{product.unitPrice}}</td>
+                        <td>{{product.productStock}}
+                            <ng-container *ngIf="product.productStock < product.stockThreshold && product.productStock !== 0">
+                                <div class="low-stock">Low stock</div>
+                            </ng-container>
+                            <ng-container *ngIf="product.productStock === 0">
+                                <div class="out-of-stock">Out of stock</div>
+                            </ng-container>
+                        </td>
+                        <td>{{product.stockThreshold}}</td>
+
                         <td>
                             <a type="button" (click)="navigateToUpdateProduct(product)" class="settings" title="Settings" data-toggle="tooltip"><em class="material-icons">&#xE3C9;</em></a>
                             <a type="button" (click)="deleteProduct(product.productId)" class="delete" title="Delete Product" data-toggle="tooltip"><em class="material-icons">&#xE5C9;</em></a>
