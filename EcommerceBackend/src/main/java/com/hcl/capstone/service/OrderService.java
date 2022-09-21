@@ -139,9 +139,9 @@ public class OrderService {
 
 					productService.saveProduct(productCheckout);
 					
-					if(itemCheckout.getProduct().getProductStock() < itemCheckout.getProduct().getStockThreshold()) {
+					if(productCheckout.getProductStock() < itemCheckout.getProduct().getStockThreshold()) {
 						ProductRestockDTO productRestockDTO = new ProductRestockDTO();
-						productRestockDTO.setProductId(itemCheckout.getProduct().getProductId());
+						productRestockDTO.setProductId(productCheckout.getProductId());
 						int restockQuantity = itemCheckout.getProduct().getStockThreshold();
 						productRestockDTO.setRestockQuantity(restockQuantity);
 						productRestockDTO.setMessage("Please restock this item: " + itemCheckout.getProduct().getProductName() + " for this amount: " + restockQuantity);
