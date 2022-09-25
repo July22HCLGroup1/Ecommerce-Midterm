@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SelfUpdateComponent } from './self-update.component';
+import { OrderDetailsComponent } from './order-details.component';
 
-describe('SelfUpdateComponent', () => {
-  let component: SelfUpdateComponent;
-  let fixture: ComponentFixture<SelfUpdateComponent>;
+describe('OrderDetailsComponent', () => {
+  let component: OrderDetailsComponent;
+  let fixture: ComponentFixture<OrderDetailsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SelfUpdateComponent ]
+      declarations: [ OrderDetailsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SelfUpdateComponent);
+    fixture = TestBed.createComponent(OrderDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

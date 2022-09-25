@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { OktaAuthStateService, OKTA_AUTH } from '@okta/okta-angular';
 import { OktaAuth, AuthState } from '@okta/okta-auth-js';
+import { contains } from 'jquery';
 import { filter, map } from 'rxjs/operators';
 
 @Injectable({
@@ -67,9 +68,30 @@ export class UserAuthService {
     }
   }
 
+  public isAdmin(){
+    console.log(this.getRoles());
+    var x =0;
+    if(this.getRoles() !== null) {
+    this.getRoles().forEach(function(item){
+      if(item['roleName']==='ADMIN'){
+        console.log("IS an ADMIN");
+        x=1;
+      }
+    });
+    if(x==1){
+      return true;
+    }
+    else{
+      return false;
+    }} else {
+      return false;
+    }
+  }
+
   public logout() {
     this.clear();
-    this.router.navigate(['/']);
-    window.location.reload();
+    this.router.navigate(['/']).then(() => {
+      window.location.reload();
+    });
   }
 }

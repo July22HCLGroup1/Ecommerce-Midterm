@@ -4,6 +4,7 @@ import {map} from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Product } from '../common/product';
 import { environment } from 'src/environments/environment';
+import { OrderDto } from '../common/orderDto';
 @Injectable({
   providedIn: 'root'
 })
@@ -33,11 +34,18 @@ export class AdminService {
       }))
   }
 
+  public getOrderById(id : any){
+    return this.http.get<any>(this.PATH_OF_API + "/admin/order/" + id)
+    .pipe(map((res:any)=>{
+      return res;
+    }))
+  }
+
   public deleteUser(id : any) {
     return this.http.delete(this.PATH_OF_API + "/admin/delete-user/" + id);
   }
 
-  public addProduct(product: Product) : Observable<any> {
+  public addProduct(product : Product) : Observable<any> {
     return this.http.post<any>(this.PATH_OF_API + "/inventory/add/", product, {
     });
   }
@@ -48,6 +56,11 @@ export class AdminService {
 
   public updateProduct(product : any) {
     return this.http.put(this.PATH_OF_API + "/admin/product/" + product.productId, product);
+  }
+
+  public updateOrder(id : any, orderDTO : OrderDto){
+    console.log(orderDTO.dtoStatus);
+    return this.http.put(this.PATH_OF_API + "/admin/order/update/" + id, orderDTO);
   }
 
   public processRestock() : Observable<any> {

@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse, HttpStatusCode } from "@angular/common/http";
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
 import { Inject, Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { OKTA_AUTH } from "@okta/okta-angular";
@@ -31,7 +31,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 (err: HttpErrorResponse) => {
                     console.log(err.status);
                     if(err.status === 401) {
-                        this.router.navigate(['/login']);
+                        this.router.navigate(['/auth/login']);
                     } else if (err.status === 403) {
                         this.router.navigate(['/forbidden']);
                     } else if (err.status === 200) {
@@ -56,7 +56,7 @@ export class AuthInterceptor implements HttpInterceptor {
     } 
     private addOktaToken(request: HttpRequest<unknown>, oktaToken: string): HttpRequest<unknown> {
         let req = request;
-        const allowedOrigins = ['http://localhost', 'https://hcl-capstone-ecommerce-group1-backend.azurewebsites.net'];
+        const allowedOrigins = ['http://localhost', 'https://hcl-capstone-ecommerce-group1-backend.azurewebsites.net', 'https://hcl-capstone-ecommerce-group1-frontend.azurewebsites.net'];
         if (!!allowedOrigins.find(origin => request.url.includes(origin))) {
           req = request.clone({ setHeaders: { 'Authorization': `Bearer ${oktaToken}` } });
         }

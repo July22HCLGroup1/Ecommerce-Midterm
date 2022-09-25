@@ -1,10 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { data } from 'jquery';
 import { Observable } from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Product }from '../common/product';
+import { UpdateImageDTO } from '../UpdateImageDTO';
 @Injectable({
   providedIn: 'root'
 })
@@ -50,6 +50,12 @@ export class ApiService {
   // Only send search string - allow frontend to handle pagination
   public getSearchResult(searchStr: string): Observable<Product[]> {
     return this.http.get<Product[]>(this.PATH_OF_API + "/api/product/search", { params: {searchStr} });
+  }
+
+  public updateProductImage(productId : string, updateImageDTO : UpdateImageDTO) : Observable<any>{
+    console.log(updateImageDTO);
+    console.log("update product image");
+    return this.http.put<any>(this.PATH_OF_API + "/api/update-product-image/" + productId, updateImageDTO);
   }
 
   throwError(error: any) {

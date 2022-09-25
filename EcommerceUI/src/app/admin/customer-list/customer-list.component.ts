@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from 'src/app/service/admin.service';
-import { UserService } from 'src/app/service/user.service';
 
 @Component({
   selector: 'app-customer-list',
@@ -28,5 +27,18 @@ export class CustomerListComponent implements OnInit {
     this.adminService.deleteUser(parseInt(id)).subscribe(data => {
       window.location.reload();
     });
+  }
+
+  public ifdeleteUser(id : any) {
+    console.log(id);
+    var answer = window.confirm("Delete user?");
+    if (answer) {
+      this.adminService.deleteUser(parseInt(id)).subscribe(data => {
+        window.location.reload();
+      });
+    }
+    else {
+      //some code
+    }
   }
 }

@@ -20,4 +20,8 @@ export class OrdersListComponent implements OnInit {
       console.log(this.orderList);
     });
   }
+
+  navigateToOrder(id : any) {
+    this._router.navigate(['/orders-list', id])
+  }
 }

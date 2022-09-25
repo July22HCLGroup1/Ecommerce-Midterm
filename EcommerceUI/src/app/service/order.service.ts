@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Order } from '../common/order';
-import {catchError, map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 
 
@@ -19,7 +19,7 @@ export class OrderService {
   constructor(private http : HttpClient) { }
 
   getOrderDetail(){
-    return this.http.get<any>("http://localhost:8080//user/get-order")
+    return this.http.get<any>("http://localhost:8080/user/get-order")
     .pipe(map((res:any)=>{
       return res;
     }))

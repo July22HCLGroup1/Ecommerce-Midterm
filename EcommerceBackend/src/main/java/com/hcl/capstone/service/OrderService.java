@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hcl.capstone.dto.OrderInfo;
 import com.hcl.capstone.dto.ProductRestockDTO;
+import com.hcl.capstone.dto.OrderDto;
 import com.hcl.capstone.global.OrderStatus;
 import com.hcl.capstone.mailer.Mail;
 import com.hcl.capstone.model.Address;
@@ -149,18 +150,19 @@ public class OrderService {
 						productRestockPublisher.produce(productRestockDTO);
 					}
 				}
-
+				System.out.println("The current order status is " + orderCheckout.getOrderStatus() );
 				double orderTotal = getOrderTotal(userCheckout, orderCheckout);
 				orderCheckout.setOrderTotal(orderTotal);
 				orderCheckout.setOrderStatus(OrderStatus.COMPLETED);
 				orderCheckout.setOrderDate(new Date());
+				System.out.println("The current order status is now " + orderCheckout.getOrderStatus() );
 				// Set billing & shipping address
 				orderCheckout.setShippingAddress(new Address(orderInfo.getShippingAddress()));
 				orderCheckout.setBillingAddress(new Address(orderInfo.getBillingAddress()));
 				saveOrder(orderCheckout);
 
 				Mail mailer = new Mail();
-				mailer.sendCheckoutConfirmation(userCheckout, orderCheckout, itemsCheckout);
+				mailer.sendConfirmationEmail(userCheckout, orderCheckout, itemsCheckout);
 
 				return "Your order is successfully completed. Thank you for your purchase!";
 			} else {
@@ -184,25 +186,44 @@ public class OrderService {
 		
 		return total;
 	}
-	
-		
+	   
 	public Order getOrderDetail(long orderId) {
-		Optional<Order> order = orderRepository.findById(orderId); 
-		return order.isPresent() ? order.get() : null;
+		Order order = orderRepository.findById(orderId); 
+		return order != null ? order : null;
 	}
 	
-	public Optional<Order> updateOrder(Order order) {
+	public Order updateOrder(Order order) {
 		long orderId = order.getOrderId();
-		Optional<Order> orderRepo = orderRepository.findById(orderId);
+		
+		Optional<Order> orderRepo = Optional.ofNullable(orderRepository.findById(orderId));
 		
 		if(!orderRepo.isPresent()) {
-			return Optional.empty();
+			return null;
 		}
 		
 		order.setOrderId(orderId);
+		
 		orderRepository.save(order);
 		
+		
+		
 		return orderRepository.findById(orderId);
+	}
+	
+	public Order updateOrderStatus(OrderDto orderStatusDTO, long id) throws MessagingException {
+		Optional<Order> orderRepo = Optional.ofNullable(orderRepository.findById(id));
+		
+		if(!orderRepo.isPresent()) {
+			return null;
+		}
+		
+		orderRepository.updateOrderStatus(orderStatusDTO.getDtoStatus(), id);
+		Order order = orderRepository.findById(id);
+		order.setOrderStatus(orderStatusDTO.getDtoStatus());
+		Mail mailer = new Mail();
+		mailer.sendConfirmationEmail(orderStatusDTO.getDtoUser(), order, orderStatusDTO.getDtoCartItems());
+		
+		return orderRepository.findById(id);
 	}
 		
 	public Order saveOrder(Order order) {
@@ -234,7 +255,7 @@ public class OrderService {
 		User user = userService.getCurrentLoggedInUser(authentication);
 
 		List<Order> orders = getAllOrderByUser(user);
-
+		
 		Order orderInProgress = null;
 
 		for (Order order : orders) {
@@ -242,7 +263,7 @@ public class OrderService {
 				orderInProgress = order;
 			}
 		}
-		
+		System.out.print(orderInProgress);
 		return orderInProgress;
 	}
 }
