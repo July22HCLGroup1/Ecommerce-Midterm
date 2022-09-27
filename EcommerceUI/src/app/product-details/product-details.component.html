@@ -1,18 +1,24 @@
 <div class="container d-flex justify-content-center">
+    <div class="col mt-4">
+        <img src="{{product.productImage}}" class="image-size" alt="product image">
 
-</div>
-<div class="container d-flex justify-content-center">
-    <div class="col">
+        <h2 class="mt-4">{{product.productName}}</h2>
+
+        <div>
+            <h4>Category:</h4>
+            <div *ngFor="let category of product.categories">
+                {{category.categoryName}}
+            </div>
+        </div>
         <br/>
-        <h1>{{product.productName}}</h1>
-        <img src="{{product.productImage}}" class="image-size" alt="">
         <h3><strong>{{product.productName}}</strong></h3>
         <p>{{product.productDescription}}</p>
         <p><strong>Price:</strong> ${{product.unitPrice}}</p>
-        <div class="col">
+        <div class="col mt-4">
             <ng-container *ngIf="product.productStock > 0, else outOfStock">
                 <div class="row-md">
                     <button class="btn btn-primary" (click)=addtocart(product)>Add to Cart</button>
+
                 </div>
             </ng-container>
             <ng-template #outOfStock>
@@ -21,13 +27,12 @@
                 </div>
             </ng-template>
 
-            <br>
-            <div class="row-md">
+<div class="row-md mt-4">
                 <button class="btn btn-primary" (click)="goBack()">Back</button>
             </div>
 
         </div>
 
     </div>
-
+</div>
     <br/>

@@ -34,9 +34,10 @@ export class ApiService {
       productName: (data as any).productName,
       unitPrice: (data as any).unitPrice,
       productStock: (data as any).productStock,
+      stockThreshold: (data as any).stockThreshold,
       productImage: (data as any).productImage,
       productDescription: (data as any).productDescription,
-      stockThreshold: (data as any).productStock
+      categories: (data as any).categories
       }),
       catchError(error => this.throwError(error))
     )
@@ -56,6 +57,10 @@ export class ApiService {
     console.log(updateImageDTO);
     console.log("update product image");
     return this.http.put<any>(this.PATH_OF_API + "/api/update-product-image/" + productId, updateImageDTO);
+  }
+
+  public getCategories(): Observable<any> {
+    return this.http.get<any>(this.PATH_OF_API + "/api/product/categories");
   }
 
   throwError(error: any) {

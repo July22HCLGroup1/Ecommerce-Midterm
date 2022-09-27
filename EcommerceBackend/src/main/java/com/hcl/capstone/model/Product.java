@@ -1,10 +1,17 @@
 package com.hcl.capstone.model;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.hcl.capstone.dto.ProductDto;
@@ -36,11 +43,21 @@ public class Product {
 	
 	@Column(name = "STOCK_THRESHOLD")
 	private int stockThreshold;
+	
+	@ManyToMany(cascade = {
+			
+            CascadeType.MERGE}, fetch = FetchType.EAGER)
+	@JoinTable(
+		name = "PRODUCT_CATEGORIES",
+		joinColumns = @JoinColumn(name = "PRODUCT_ID"),
+		inverseJoinColumns = @JoinColumn(name = "CATEGORY_ID"))
+	private Set<Category> categories;
 
-	public Product(String productName, double unitPrice, int productStock, String productImage, String productDescription, int stockThreshold){
+	public Product(String productName, double unitPrice, int productStock, int stockThreshold, String productImage, String productDescription){
 		this.productName = productName;
 		this.unitPrice = unitPrice;
 		this.productStock = productStock;
+		this.stockThreshold = stockThreshold;
 		this.productImage = productImage;
 		this.productDescription = productDescription;
 		this.stockThreshold = stockThreshold;
@@ -51,11 +68,14 @@ public class Product {
 	}
 
 	public Product(ProductDto productDTO) {
-		this.productName = productDTO.getDtoName();
-		this.unitPrice = productDTO.getDtoPrice();
-		this.productStock = productDTO.getDtoStock();
-		this.productImage = productDTO.getDtoImage();
-		this.productDescription = productDTO.getDtoDescription();
+		this.productId = productDTO.getProductIdDto();
+		this.productName = productDTO.getProductNameDto();
+		this.unitPrice = productDTO.getUnitPriceDto();
+		this.productStock = productDTO.getProductStockDto();
+		this.productImage = productDTO.getProductImageDto();
+		this.productDescription = productDTO.getProductDescriptionDto();
+		this.stockThreshold = productDTO.getStockThresholdDto();
+		this.categories = productDTO.getCategoriesDto();
 	}
 	
 	public void setProductId(long productId) {
@@ -102,6 +122,14 @@ public class Product {
 		this.productDescription = productDescription;
 	}
 
+	public Set<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(Set<Category> categories) {
+		this.categories = categories;
+	}
+
 	public int getStockThreshold() {
 		return stockThreshold;
 	}
@@ -109,5 +137,5 @@ public class Product {
 	public void setStockThreshold(int stockThreshold) {
 		this.stockThreshold = stockThreshold;
 	}
-
+	
 }

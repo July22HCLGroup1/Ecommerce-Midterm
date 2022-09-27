@@ -21,8 +21,9 @@
                     <th>ID</th>
                     <th>Image</th>
                     <th>Name</th>
-                    <th>Price</th>
                     <th>Description</th>
+                    <th>Category</th>
+                    <th>Price</th>
                     <th>Stock Quantity</th>
                     <th>Stock Threshold</th>
                     <th>Action</th>
@@ -32,8 +33,12 @@
                 <tr *ngFor="let product of productList; let i = index">
                     <td>{{i+1}}</td>
                     <td><img src="{{product.productImage}}" alt="product image" style="width: 120px;" /></td>
+
                     <td>{{product.productName}}</td>
                     <td>{{product.productDescription}}</td>
+                    <td>
+                        <span *ngFor="let category of product.categories">{{category.categoryName}}<br/></span>
+                    </td>
                     <td>${{product.unitPrice}}</td>
                     <td>{{product.productStock}}
                         <ng-container *ngIf="product.productStock < product.stockThreshold && product.productStock !== 0">
