@@ -6,6 +6,7 @@ import { AddressService } from '../service/address.service';
 import { UpdateService } from '../service/user-update.service';
 import { UserService } from '../service/user.service';
 import { User } from '../user';
+import { UpdateImageDTO } from 'src/app/UpdateImageDTO';
 
 @Component({
   selector: 'app-user-update',
@@ -22,6 +23,7 @@ export class UserUpdateComponent implements OnInit {
   address = new AddressDTO();
   newAddress = new AddressDTO();
   msg = '';
+  updateImageDTO = new UpdateImageDTO();
 
   ngOnInit(): void {
     let userid = this.activatedRoute.snapshot.params["userid"];
@@ -41,8 +43,49 @@ export class UserUpdateComponent implements OnInit {
       this.setUpNewAddress(res);
     });
 
+    this.cloudinary.createUploadWidget(
+      {
+        cloudName: 'dwnb2nqcu',
+        uploadPreset: 'ysvn2muf'
+      },
+      (error, result) => {
+        if (!error && result && result.event === "success") {
+          console.log('Done! Here is the image info: ', result.info);
+          this.updateImageDTO.imageUrl = result.info.url;
+          this.userService.updateUserImage(this.updateImageDTO).subscribe(
+            (data) => {
+              
+          }, (error) => {
+            if(error == "OK") {
+              Swal.fire(
+                'Success!',
+                'Your profile image has been updated!',
+                'success'
+              ).then(function(){
+                window.location.reload();
+              })
+            } else {
+              Swal.fire(
+                'Error!',
+                'Image upload error!',
+                'error'
+              )
+
+            }
+          }
+          )
+           
+        }
+      }
+    ).subscribe(widget => this.widget = widget);
     
-    
+  }
+
+  openWidget() {
+    if (this.widget) {
+      console.log('open')
+      this.widget.open();
+    }
   }
 
   public getUrl(){
