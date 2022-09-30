@@ -38,17 +38,17 @@
                 <div class="row">
                     <ng-container *ngIf="item.productStock > 0, else outOfStock">
                         <div class="col-md-6">
-                            <button class="btn btn-primary" (click)=addtocart(item)>Add to Cart</button>
+                            <button class="btn btn-primary add-to-cart" (click)=addtocart(item)>Add to Cart</button>
                         </div>
                     </ng-container>
                     <ng-template #outOfStock>
                         <div class="col-md-6">
-                            <button class="btn btn-danger" disabled>Out of Stock</button>
+                            <button class="btn btn-danger add-to-cart" disabled>Out of Stock</button>
                         </div>
                     </ng-template>
 
                     <div class="col-md-6">
-                        <button class="btn btn-primary" (click)="goToProductDetails(item)">View More</button>
+                        <button class="btn btn-primary add-to-cart" (click)="goToProductDetails(item)">View More</button>
                     </div>
                 </div>
             </div>
