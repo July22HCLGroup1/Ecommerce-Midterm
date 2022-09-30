@@ -26,4 +26,12 @@ describe('AddProductComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
+  it('should allow valid input', () => {
+    // TODO add
+  });
+
+  it ('should reject invalid input', () => {
+    // TODO add
+  })
 });

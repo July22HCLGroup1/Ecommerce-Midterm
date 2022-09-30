@@ -24,4 +24,8 @@ describe('InventoryComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should return all products', () => {
+    // TODO add along w/implemented function in admin mock service
+  });
 });

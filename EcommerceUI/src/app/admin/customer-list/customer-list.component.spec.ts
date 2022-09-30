@@ -24,4 +24,8 @@ describe('CustomerListComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
+  it('should return all customers', () => {    
+    // TODO add along w/implemented function in admin mock service
+  })
 });

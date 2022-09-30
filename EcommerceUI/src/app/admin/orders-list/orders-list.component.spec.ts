@@ -24,4 +24,8 @@ describe('OrdersListComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should get all orders', () => {    
+    // TODO add along w/implemented function in admin mock service
+  })
 });
