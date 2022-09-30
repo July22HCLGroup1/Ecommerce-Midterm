@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Product } from '../common/product';
 import { environment } from 'src/environments/environment';
 import { OrderDto } from '../common/orderDto';
+import { UpdateImageDTO } from '../UpdateImageDTO';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +13,7 @@ export class AdminService {
 
   PATH_OF_API = environment.apiUrl;
 
-  constructor(private http : HttpClient) { }
+  constructor(private http : HttpClient, private httpClient: HttpClient) { }
 
   public getAllUsers(){
     return this.http.get<any>(this.PATH_OF_API + "/admin/users")
@@ -61,5 +62,11 @@ export class AdminService {
   public updateOrder(id : any, orderDTO : OrderDto){
     console.log(orderDTO.dtoStatus);
     return this.http.put(this.PATH_OF_API + "/admin/order/update/" + id, orderDTO);
+  }
+  
+  public adminUpdateUserImage(id: number , updateImageDTO : UpdateImageDTO) : Observable<any>{
+    console.log(updateImageDTO);
+    console.log("user image updated");
+    return this.httpClient.put<any>(this.PATH_OF_API + "/admin/update-user-image/" + id, updateImageDTO);
   }
 }

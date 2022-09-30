@@ -1,12 +1,15 @@
 package com.hcl.capstone.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.mail.MessagingException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +24,7 @@ import com.hcl.capstone.model.User;
 import com.hcl.capstone.dto.AddressDto;
 import com.hcl.capstone.dto.OrderDto;
 import com.hcl.capstone.dto.ProductDto;
+import com.hcl.capstone.dto.UpdateImageDto;
 import com.hcl.capstone.model.Address;
 import com.hcl.capstone.model.Order;
 import com.hcl.capstone.service.ProductService;
@@ -127,5 +131,18 @@ public class AdminController {
 			return new ResponseEntity<>(result, HttpStatus.OK);
 		}
 	}
+	
+	@PutMapping("/admin/update-user-image/{id}")
+    public ResponseEntity<String> adminUpdateImage(@PathVariable long id, @RequestBody UpdateImageDto updateImageDTO) {
+	    if(StringUtils.isNotEmpty(updateImageDTO.getImageUrl())) {
+
+                userService.adminUpdateImage(id, updateImageDTO.getImageUrl());
+                return new ResponseEntity<>("Image saved successfully", HttpStatus.OK);
+                
+            } else {
+                return new ResponseEntity<>("Please provide image url", HttpStatus.BAD_REQUEST);
+            }
+            
+        }
 	
 }

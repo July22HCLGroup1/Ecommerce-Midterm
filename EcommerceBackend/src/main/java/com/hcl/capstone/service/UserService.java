@@ -207,5 +207,27 @@ public class UserService {
 		}
 		
 	}
+	
+	public boolean adminUpdateImage(long id, String imageUrl) {
+
+	    Optional<User> userRepo = Optional.ofNullable(userRepository.findById(id));
+	    if (!userRepo.isPresent()) {
+
+            return false;
+
+        }
+        User currentUser = getUserById(id);
+
+        if(currentUser != null) {
+
+            currentUser.setProfileImage(imageUrl);=
+            userRepository.save(currentUser);
+            return true;
+
+        } else {
+            return false;
+        }
+
+    }
 
 }

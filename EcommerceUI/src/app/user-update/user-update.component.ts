@@ -7,6 +7,7 @@ import { UpdateService } from '../service/user-update.service';
 import { UserService } from '../service/user.service';
 import { User } from '../user';
 import { UpdateImageDTO } from 'src/app/UpdateImageDTO';
+import { CloudinaryService } from '../service/cloudinary.service';
 
 @Component({
   selector: 'app-user-update',
@@ -15,7 +16,7 @@ import { UpdateImageDTO } from 'src/app/UpdateImageDTO';
 })
 export class UserUpdateComponent implements OnInit {
   [x: string]: any;
-  constructor(private updateService:UpdateService, private userService:UserService, private addressService:AddressService, private activatedRoute : ActivatedRoute) { }
+  constructor(private updateService:UpdateService, private userService:UserService, private addressService:AddressService, private activatedRoute : ActivatedRoute, private cloudinary: CloudinaryService) { }
 
   id : number;
   user = new User();
@@ -23,6 +24,7 @@ export class UserUpdateComponent implements OnInit {
   address = new AddressDTO();
   newAddress = new AddressDTO();
   msg = '';
+  widget:any;
   updateImageDTO = new UpdateImageDTO();
 
   ngOnInit(): void {
@@ -52,7 +54,7 @@ export class UserUpdateComponent implements OnInit {
         if (!error && result && result.event === "success") {
           console.log('Done! Here is the image info: ', result.info);
           this.updateImageDTO.imageUrl = result.info.url;
-          this.userService.updateUserImage(this.updateImageDTO).subscribe(
+          this.adminService.adminUpdateUserImage(this.id, this.updateImageDTO).subscribe(
             (data) => {
               
           }, (error) => {
@@ -95,6 +97,7 @@ export class UserUpdateComponent implements OnInit {
   }
 
   public userUpdate(id:any, user:User){
+    user.profileImage = this.updateImageUrl;
     this.service.updateUser(parseInt(id),user).subscribe(
       data => {
         console.log("Response received!");
@@ -127,6 +130,7 @@ export class UserUpdateComponent implements OnInit {
 
   public userProfileUpdate(user: User){
     console.log(this.user.userId);
+    
 
     this.updateService.updateUser(this.user.userId, user).subscribe(
       (data) => {
