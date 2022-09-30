@@ -8,6 +8,7 @@ import { UserService } from '../service/user.service';
 import { User } from '../user';
 import { UpdateImageDTO } from 'src/app/UpdateImageDTO';
 import { CloudinaryService } from '../service/cloudinary.service';
+import { AdminService } from '../service/admin.service';
 
 @Component({
   selector: 'app-user-update',
@@ -16,7 +17,7 @@ import { CloudinaryService } from '../service/cloudinary.service';
 })
 export class UserUpdateComponent implements OnInit {
   [x: string]: any;
-  constructor(private updateService:UpdateService, private userService:UserService, private addressService:AddressService, private activatedRoute : ActivatedRoute, private cloudinary: CloudinaryService) { }
+  constructor(private adminService:AdminService, private updateService:UpdateService, private userService:UserService, private addressService:AddressService, private activatedRoute : ActivatedRoute, private cloudinary: CloudinaryService) { }
 
   id : number;
   user = new User();

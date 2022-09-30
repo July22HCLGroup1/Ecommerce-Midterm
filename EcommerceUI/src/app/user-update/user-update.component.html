@@ -13,10 +13,10 @@
                             <div class="card-body text-center">
                                 <!-- Profile picture image-->
                                 <ng-container *ngIf="user.profileImage, else defaultImage">
-                                    <img class="img-account-profile rounded-circle mb-2" src="{{user.profileImage}}" alt="user profile image">
+                                    <img class="img-account-profile rounded-circle mb-2 image-size" src="{{user.profileImage}}" alt="user profile image">
                                 </ng-container>
                                 <ng-template #defaultImage>
-                                    <img class="img-account-profile rounded-circle mb-2" src="../../../assets/images/defaultProfileImage.png" alt="user profile image">
+                                    <img class="img-account-profile rounded-circle mb-2 image-size" src="../../../assets/images/defaultProfileImage.png" alt="user profile image">
                                 </ng-template>
             
             

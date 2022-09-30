@@ -220,7 +220,7 @@ public class UserService {
 
         if(currentUser != null) {
 
-            currentUser.setProfileImage(imageUrl);=
+            currentUser.setProfileImage(imageUrl);
             userRepository.save(currentUser);
             return true;
 
