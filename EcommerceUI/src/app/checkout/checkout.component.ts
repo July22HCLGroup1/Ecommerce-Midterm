@@ -118,7 +118,7 @@ export class CheckoutComponent implements OnInit {
               this.showSpinner = false;
             } else {
               this.orderInfo.shippingAddress = this.shippingAddress;
-              if (true) { /* TODO replace boolean w/check */      
+              if (this.orderInfo.sameAddress) { /* TODO replace boolean w/check */      
                 this.orderInfo.billingAddress = this.shippingAddress;
               } else {
                 this.orderInfo.billingAddress = this.billingAddress;

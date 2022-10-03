@@ -132,9 +132,15 @@ public class OrderService {
 				orderCheckout.setOrderStatus(OrderStatus.COMPLETED);
 				orderCheckout.setOrderDate(new Date());
 				System.out.println("The current order status is now " + orderCheckout.getOrderStatus() );
-				// Set billing & shipping address
-				orderCheckout.setShippingAddress(new Address(orderInfo.getShippingAddress()));
-				orderCheckout.setBillingAddress(new Address(orderInfo.getBillingAddress()));
+				// Set billing & shipping address (same if set to be)
+				if (orderInfo.isSameAddress()) {
+					Address addr = new Address(orderInfo.getShippingAddress());
+					orderCheckout.setShippingAddress(addr);
+					orderCheckout.setBillingAddress(addr);
+				} else {
+					orderCheckout.setShippingAddress(new Address(orderInfo.getShippingAddress()));
+					orderCheckout.setBillingAddress(new Address(orderInfo.getBillingAddress()));					
+				}
 				saveOrder(orderCheckout);
 
 				Mail mailer = new Mail();
