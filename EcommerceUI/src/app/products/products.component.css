@@ -75,3 +75,15 @@ a.active {
 .add-to-cart {
     font-size: 10px;
 }
+
+::ng-deep label.star {
+    font-size: 15px !important;
+}
+
+::ng-deep label.star:checked {
+    text-shadow: none !important;
+}
+
+::ng-deep label.star:before {
+    text-shadow: none !important;
+}

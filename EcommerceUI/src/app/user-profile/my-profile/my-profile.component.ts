@@ -3,6 +3,7 @@ import { AddressDTO } from 'src/app/addressDTO';
 import { AddressService } from 'src/app/service/address.service';
 import { CloudinaryService } from 'src/app/service/cloudinary.service';
 import { UpdateService } from 'src/app/service/self-update.service';
+import { StateService } from 'src/app/service/state.service';
 import { UserService } from 'src/app/service/user.service';
 import { UpdateImageDTO } from 'src/app/UpdateImageDTO';
 import { User } from 'src/app/user';
@@ -15,7 +16,7 @@ import Swal from 'sweetalert2';
 })
 export class MyProfileComponent implements OnInit {
 
-  constructor(private updateService:UpdateService, private userService:UserService, private addressService:AddressService, private cloudinary: CloudinaryService) { }
+  constructor(private stateService:StateService, private updateService:UpdateService, private userService:UserService, private addressService:AddressService, private cloudinary: CloudinaryService) { }
 
   user = new User();
   response : any;
@@ -23,20 +24,22 @@ export class MyProfileComponent implements OnInit {
   newAddress = new AddressDTO();
   widget: any;
   updateImageDTO = new UpdateImageDTO();
+  public states:any;
 
   ngOnInit(): void {
     this.userService.getCurrentUser()
     .subscribe((res: any)=>{
       this.user = res;
-      console.log(this.user);
-      console.log(this.user.password);
+      console.log("Finding user");
     });
 
     this.addressService.getUserAddress()
       .subscribe((res: any)=>{
         this.setUpNewAddress(res);
-        console.log(this.address);
+        console.log("Finding address");
     });
+
+    this.states=this.stateService.getStatesList();
 
     this.cloudinary.createUploadWidget(
       {
@@ -45,12 +48,13 @@ export class MyProfileComponent implements OnInit {
       },
       (error, result) => {
         if (!error && result && result.event === "success") {
-          console.log('Done! Here is the image info: ', result.info);
+          console.log("Uploading image....");
           this.updateImageDTO.imageUrl = result.info.url;
           this.userService.updateUserImage(this.updateImageDTO).subscribe(
             (data) => {
               
           }, (error) => {
+            console.log("Done!");
             if(error == "OK") {
               Swal.fire(
                 'Success!',
@@ -66,14 +70,13 @@ export class MyProfileComponent implements OnInit {
                 'error'
               )
 
+              }
             }
+            )
+            
           }
-          )
-           
         }
-      }
-    ).subscribe(widget => this.widget = widget);
-
+      ).subscribe(widget => this.widget = widget);
   }
 
   openWidget() {
@@ -81,6 +84,31 @@ export class MyProfileComponent implements OnInit {
       console.log('open')
       this.widget.open();
     }
+  }
+
+  deletePic() {
+    this.updateImageDTO.imageUrl = "../../../assets/images/defaultProfileImage.png";
+    this.userService.updateUserImage(this.updateImageDTO).subscribe(
+      (data) => {
+        }, (error) => {
+      if(error == "OK") {
+        Swal.fire(
+          'Success!',
+          'Your profile image has been deleted!',
+          'success'
+        ).then(function(){
+          window.location.reload();
+        })
+      }else {
+        console.log(error);
+        Swal.fire(
+          'Error!',
+          'Image delete error!',
+          'error'
+        )
+
+      }
+    });
   }
 
   setUpNewAddress(res: any) {
@@ -102,7 +130,6 @@ export class MyProfileComponent implements OnInit {
   }
 
   public userProfileUpdate(newUser: User){
-    console.log(this.user.userId);
 
     this.updateService.updateSelf(this.user.userId, newUser).subscribe(
       (data) => {
@@ -127,7 +154,6 @@ export class MyProfileComponent implements OnInit {
   }
 
   public userUpdateAddress(newAddress : AddressDTO){
-    console.log(this.newAddress);
     this.addressService.updateUserAddress(newAddress).subscribe(
       (data) => {
         Swal.fire(

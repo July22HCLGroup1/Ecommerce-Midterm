@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/service/api.service';
 import { CartService } from 'src/app/service/cart.service';
 import Swal from 'sweetalert2';
 import { Product } from '../common/product';
+import { productAverage } from '../common/productAverage';
 
 @Component({
   selector: 'app-products',
@@ -21,15 +21,16 @@ export class ProductsComponent implements OnInit {
   searchStr: string = "";
   searchKey:string ="";
 
-  public pageSize = 10;
+  public pageSize = 12;
   public currentPage = 0;
   public filteredList : Product[] = [];
   public allProductList : Product[];
-
+  productAverage: productAverage;
   toggle: boolean = false;
-
+  reviewScores: productAverage[] = [];
+  average : any;
   categories : any[] = [];
-
+  i = 0;
   categoryList: any[];
 
   constructor(protected api : ApiService, private cartService : CartService, private _router : Router) { }
@@ -37,7 +38,6 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
     this.api.getCategories().subscribe((data) => {
       this.categoryList = data;
-      console.log(this.categoryList);
 
       //Add all category for side bar
       const allCategory = {
@@ -69,8 +69,32 @@ export class ProductsComponent implements OnInit {
     this.pageIterator();
   }
 
+  getScores(productList: any){
+    this.reviewScores = [];
+    productList.forEach(product => {
+      this.productAverage = new productAverage;
+      this.productAverage.productId = product.productId;
+      this.reviewScores.push(this.productAverage);
+    });
+    this.getAverages(this.reviewScores);
+  }
+
+  getAverages(reviewScores: any){
+    reviewScores.forEach(review => {
+      this.api.getReviewAverage(review.productId).subscribe(data => {
+      if(isNaN(data)){
+        review.average = 0;
+      } else{
+        review.average = Math.ceil(data);
+      }
+    }, (error: any) => {
+      console.log("Unable to find review average");
+    });
+    });
+  }
+
   private getProducts(): void {
-    console.log(this.searchStr);
+    console.log("getting products");
     // If searchStr is not present, search all products; else, search matching products
     if (this.searchStr == undefined || this.searchStr == "") {
       this.api.getProduct()
@@ -83,16 +107,19 @@ export class ProductsComponent implements OnInit {
       // TODO add pagination
       this.api.getSearchResult(this.searchStr)
         .subscribe(res => {
+          console.log("Searching....");
           this.searchedProducts = res;
           this.pageIterator();
         });
     }    
+    
   }
 
   private pageIterator() {
     const startIndex = this.currentPage * this.pageSize;
     const endIndex = (this.currentPage + 1) * this.pageSize;
     this.productList = this.searchedProducts.slice(startIndex,endIndex);   
+    this.getScores(this.productList);
   }
 
   selectedProduct: any;
@@ -149,7 +176,9 @@ export class ProductsComponent implements OnInit {
 
     this.searchedProducts = this.filteredList;
     this.productList = this.filteredList;
- 
+
+    this.getScores(this.productList);
+
     //reset filter list
     this.filteredList = [];
 
@@ -157,6 +186,7 @@ export class ProductsComponent implements OnInit {
     if(option.categoryName === "All") {
       this.searchedProducts = this.allProductList;
       this.productList = this.allProductList;
+      this.getScores(this.productList);
     }
 
   }

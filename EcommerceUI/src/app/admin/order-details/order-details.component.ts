@@ -15,6 +15,7 @@ export class OrderDetailsComponent implements OnInit {
   private sub: any;
   order : any;
   orderUpdate = new OrderDto();
+  score: any;
 
   constructor(private adminService : AdminService,private route: ActivatedRoute) { }
 
@@ -35,12 +36,11 @@ export class OrderDetailsComponent implements OnInit {
   }
 
   onSelected(value:string): void {
-		this.updateStatus = value;
+		this.score = value;
 	}
 
   updateOrder() {
-    console.log(this.orderUpdate)
-    this.setDto(this.order);
+    console.log("Order update request sent")
     if(this.updateStatus == null || this.updateStatus == this.order.orderStatus){
       Swal.fire(
         'Error!',
