@@ -1,5 +1,5 @@
 .intro {
-    background: url("../../../assets/images/splash-background.jpg")no-repeat;
+    background: url("../../../assets/images/splash-background.png")no-repeat;
     background-size: cover;
 }
 
@@ -16,6 +16,11 @@
 .logo_size {
     width: 50px;
     height: 50px;
+}
+
+.store_name {
+    width: 30%;
+    height: 30%;
 }
 
 .right-element {
@@ -90,7 +95,7 @@
         margin-top: 1em;
     }
     .intro {
-        background: url("../../../assets/images/splash-background.jpg")no-repeat;
+        background: url("../../../assets/images/splash-background.png")no-repeat;
         background-size: cover;
     }
     .navbar {
@@ -107,15 +112,15 @@
         margin-top: 3em;
     }
     .intro {
-        background: url("../../../assets/images/splash-background.jpg")no-repeat;
-        background-size: contain;
+        background: url("../../../assets/images/splash-background.png")no-repeat;
+        background-size: cover;
     }
     .navbar {
         box-shadow: none;
         padding-top: 2em;
     }
     .view {
-        height: 75vh !important;
+        height: 50vh !important;
     }
 }
 
@@ -153,4 +158,9 @@
     position: relative;
     top: 300px;
     left: 200px;
+}
+
+.iphone{
+    width: 10%;
+    height: 10%;
 }
