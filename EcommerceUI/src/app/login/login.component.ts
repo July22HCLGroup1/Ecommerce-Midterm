@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit {
   public isAuthenticated$!: Observable<boolean>;
   public isDatabaseLoggedIn : boolean;
   public isLoggedIn : boolean;
+  public isAdmin: boolean;
 
   public name$!: Observable<string>;
 
@@ -93,19 +94,18 @@ export class LoginComponent implements OnInit {
         this.userAuthService.setToken(response.jwtToken);
         this.userAuthService.setDatabaseLogin("true");
 
-        const role = response.user.roles[0].roleName;
         const roleList = response.user.roles;
        
-        let isAdmin = false;
+        this.isAdmin = false;
 
         for(let item in roleList) {
           console.log("Finding user permissions");
           if(roleList[item].roleName === "ADMIN"){
-            isAdmin = true;
+            this.isAdmin = true;
           }
         }
 
-        if (isAdmin === true) {
+        if (this.isAdmin === true) {
           this.router.navigate(['/admin']);
         } else {
     

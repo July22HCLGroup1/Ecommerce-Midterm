@@ -1,3 +1,5 @@
+import { Role } from "./role";
+
 export class User {
     userId!: number;
     userName!: string;
@@ -6,6 +8,7 @@ export class User {
     lastName!: string;
     email!: string;
     profileImage! : string;
+    roles?: Role[];
 
     constructor(){}
 
