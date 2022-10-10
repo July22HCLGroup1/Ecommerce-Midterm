@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -67,17 +66,12 @@ public class UserServiceTest {
 	}
 	@Order(4)
 	@Test
-	public void getCurrentLoggedInUser() throws Exception {
-		
-	}
-	@Order(5)
-	@Test
 	public void getUserByUserName() throws Exception {
 		when(userRepository.findByUserName(user.getUserName())).thenReturn(user);
 		User foundUser = userService.getUserbyUserName(user.getUserName());
 		assertEquals(foundUser,user);		
 	}
-	@Order(6)
+	@Order(5)
 	@Test
 	public void getUserByEmail() throws Exception {
 		when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
@@ -85,34 +79,10 @@ public class UserServiceTest {
 		assertEquals(foundUser,user);	
 	}
 	@Test
-	@Order(7)
+	@Order(6)
 	public void getUserById() throws Exception {
 		when(userRepository.findById(user.getUserId())).thenReturn(user);
 		User foundUser = userService.getUserById(user.getUserId());
 		assertEquals(foundUser,user);	
-	}	
-	
-	@Test
-	@Order(8)
-	public void sendRegistrationConfirmationEmail() throws Exception {
-		
-	}
-
-	@Test
-	@Order(9)
-	public void updateAuthProvider() throws Exception {
-		
-	}
-	@Test
-	@Order(10)
-	public void updateUser() throws Exception {
-		
-	}
-
-	// Last test - delete user entered into database
-	@AfterAll
-	@Test
-	public void deleteUserById() throws Exception {
-		
 	}
 }
