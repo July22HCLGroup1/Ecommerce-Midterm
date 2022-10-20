@@ -54,17 +54,17 @@ public class ProductController {
 	
 	@GetMapping("/api/product/categories")
 	public List<Category> getProductCategories() {
-		return productService.getProductCategories();
+		return productService.getAllCategories();
 	}
 	
-	@PutMapping("/api/product/update-image/{id}")
-    public ResponseEntity<String> updateProductImage(@RequestBody UpdateImageDto updateImageDTO, @PathVariable long id) {
+	@PutMapping("/api/update-product-image/{id}")
+    public ResponseEntity<String> updateImage(@RequestBody UpdateImageDto updateImageDTO, @PathVariable long id) {
     	if(StringUtils.isNotEmpty(updateImageDTO.getImageUrl())) {
 
-    		if (productService.updateProductImage(id, updateImageDTO.getImageUrl()) == null)
-        		return new ResponseEntity<>("Error - product w/id "+id+" does not exist!", HttpStatus.BAD_REQUEST);
+    		productService.updateProductImage(id, updateImageDTO.getImageUrl());
     		
     		return new ResponseEntity<>("Image saved successfully", HttpStatus.OK);
+    		
     	} else {
     		return new ResponseEntity<>("Please provide image url", HttpStatus.BAD_REQUEST);
     	}

@@ -124,7 +124,7 @@ public class OrderService {
 						return new ResponseEntity<>("Invalid order quantity!", HttpStatus.BAD_REQUEST);
 					}
 
-					productService.updateProductStock(productCheckout);
+					productService.saveProduct(productCheckout);
 				}
 				System.out.println("The current order status is " + orderCheckout.getOrderStatus() );
 				double orderTotal = getOrderTotal(userCheckout, orderCheckout);
